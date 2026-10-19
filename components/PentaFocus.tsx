@@ -649,56 +649,240 @@ export default function PentaFocus() {
                 </div>
               </div>
 
-              {/* Center: MAIN FOCUS CIRCLE ENGINE WITH ORBITING SATELLITES */}
-              <div className="lg:col-span-8 bg-slate-900/40 backdrop-blur-2xl p-6 rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5),0_0_30px_rgba(6,182,212,0.12)] flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden">
-                {/* Center Elements Container with Orbit Animation */}
-                <div className="relative flex items-center justify-center w-[280px] h-[280px] my-2">
-                  {/* SVG Orbit Ring 1 (Clockwise) */}
+              {/* Center: MAIN FOCUS PLANET & SATELLITES SYSTEM */}
+              <div className="lg:col-span-8 bg-slate-900/40 backdrop-blur-2xl p-6 rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5),0_0_30px_rgba(6,182,212,0.12)] flex flex-col items-center justify-center min-h-[420px] relative overflow-hidden">
+                {/* Background Space Dust & Starfield */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <div className="absolute top-[15%] left-[12%] w-1 h-1 rounded-full bg-cyan-200 animate-star-twinkle-1" />
+                  <div className="absolute top-[28%] right-[18%] w-1.5 h-1.5 rounded-full bg-purple-200 animate-star-twinkle-2" />
+                  <div className="absolute bottom-[20%] left-[22%] w-1 h-1 rounded-full bg-blue-100 animate-star-twinkle-3" />
+                  <div className="absolute bottom-[25%] right-[14%] w-1 h-1 rounded-full bg-amber-200 animate-star-twinkle-1" />
+                  <div className="absolute top-[65%] left-[8%] w-1.5 h-1.5 rounded-full bg-emerald-200 animate-star-twinkle-2" />
+                  <div className="absolute top-[10%] right-[35%] w-1 h-1 rounded-full bg-slate-300 animate-star-twinkle-3" />
+                  {/* Subtle Planetary Orbit Nebula Glow */}
+                  <div className="absolute inset-0 bg-radial from-cyan-900/10 via-transparent to-transparent" />
+                </div>
+
+                {/* Center Planetary & Orbital Elements Container */}
+                <div className="relative flex items-center justify-center w-[320px] h-[320px] sm:w-[350px] sm:h-[350px] my-3">
+                  {/* Orbital Track 1: High Elliptical Inclination (Cor-05 Heart Pulsar) */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <svg width="100%" height="100%" viewBox="0 0 300 300" style={{ animation: 'spin 20s linear infinite' }}>
-                      <circle cx="150" cy="150" r="130" fill="none" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="6 6" opacity="0.4" />
+                    <svg width="100%" height="100%" viewBox="0 0 360 360" className="opacity-40" style={{ transform: 'rotate(-25deg)' }}>
+                      <ellipse cx="180" cy="180" rx="165" ry="150" fill="none" stroke="#a855f7" strokeWidth="1" strokeDasharray="5 5" opacity="0.45" />
                     </svg>
                   </div>
 
-                  {/* SVG Orbit Ring 2 (Counter-Clockwise) */}
+                  {/* Orbital Track 2: Mid Inclination (Aqua-03 & Terra-04) */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <svg width="100%" height="100%" viewBox="0 0 300 300" style={{ animation: 'spin-reverse 25s linear infinite' }}>
-                      <circle cx="150" cy="150" r="105" fill="none" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="4 4" opacity="0.3" />
+                    <svg width="100%" height="100%" viewBox="0 0 360 360" className="opacity-50" style={{ transform: 'rotate(20deg)' }}>
+                      <ellipse cx="180" cy="180" rx="138" ry="130" fill="none" stroke="#06b6d4" strokeWidth="1.2" strokeDasharray="4 6" opacity="0.5" />
                     </svg>
                   </div>
 
-                  {/* Orbiting Satellite Nodes Layer 1 */}
-                  <div className="absolute w-full h-full" style={{ animation: 'spin 18s linear infinite' }}>
-                    {/* Satellite 1: Fire */}
-                    <div className="absolute top-[4px] left-1/2 -translate-x-1/2">
-                      <div className="w-4 h-4 rounded-full bg-red-500 shadow-[0_0_12px_#ef4444]" />
+                  {/* Orbital Track 3: Inner Fast Orbit (Ignis-01 & Aero-02) */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <svg width="100%" height="100%" viewBox="0 0 360 360" className="opacity-60" style={{ transform: 'rotate(-10deg)' }}>
+                      <ellipse cx="180" cy="180" rx="112" ry="108" fill="none" stroke="#f59e0b" strokeWidth="1" strokeDasharray="3 4" opacity="0.4" />
+                    </svg>
+                  </div>
+
+                  {/* BACK LAYER: Planetary Rings (Behind Planet Core) */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                    <svg width="340" height="140" viewBox="0 0 340 140" className="opacity-80" style={{ transform: 'rotate(-22deg)' }}>
+                      <ellipse cx="170" cy="70" rx="155" ry="42" fill="none" stroke="url(#ringGradOuter)" strokeWidth="6" opacity="0.35" />
+                      <ellipse cx="170" cy="70" rx="142" ry="38" fill="none" stroke="url(#ringGradInner)" strokeWidth="14" opacity="0.25" />
+                      <ellipse cx="170" cy="70" rx="122" ry="32" fill="none" stroke="#06b6d4" strokeWidth="1" opacity="0.6" strokeDasharray="8 4" />
+                      <defs>
+                        <linearGradient id="ringGradOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.8" />
+                          <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.4" />
+                          <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.8" />
+                        </linearGradient>
+                        <linearGradient id="ringGradInner" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.6" />
+                          <stop offset="50%" stopColor="#0284c7" stopOpacity="0.2" />
+                          <stop offset="100%" stopColor="#6366f1" stopOpacity="0.6" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+
+                  {/* ORBITING SATELLITE SYSTEM 1: Inner Fast Track (Clockwise) */}
+                  <div
+                    className="absolute w-full h-full pointer-events-none"
+                    style={{
+                      animation: `spin ${isRunning ? '12s' : '24s'} linear infinite`,
+                    }}
+                  >
+                    {/* Satellite 1: Sol-Fire (Orbital Solar Probe) */}
+                    <div
+                      className="absolute top-[8px] left-1/2 -translate-x-1/2 group pointer-events-auto cursor-pointer"
+                      title="Sol-Fire Probe (Stimulation / Sprint Energy)"
+                    >
+                      <div className="relative flex items-center justify-center">
+                        {/* Probe Solar Wing Left */}
+                        <div className="w-2.5 h-1 bg-cyan-900 border border-cyan-400/80 rounded-[1px] shadow-[0_0_6px_#06b6d4]" />
+                        {/* Probe Main Hull */}
+                        <div className="w-3.5 h-3.5 mx-0.5 rounded-sm bg-gradient-to-tr from-red-600 via-amber-500 to-yellow-300 border border-yellow-200 flex items-center justify-center shadow-[0_0_14px_#ef4444]">
+                          <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_#fff]" />
+                        </div>
+                        {/* Probe Solar Wing Right */}
+                        <div className="w-2.5 h-1 bg-cyan-900 border border-cyan-400/80 rounded-[1px] shadow-[0_0_6px_#06b6d4]" />
+                        {/* Thruster Plume */}
+                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-1 h-2 bg-gradient-to-t from-red-500 to-transparent rounded-full animate-thruster" />
+                      </div>
                     </div>
-                    {/* Satellite 2: Heart */}
-                    <div className="absolute bottom-[4px] left-1/2 -translate-x-1/2">
-                      <div className="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_10px_#a855f7]" />
+
+                    {/* Satellite 2: Zephyr-Wind (Atmospheric Skimmer) */}
+                    <div
+                      className="absolute bottom-[8px] left-1/2 -translate-x-1/2 group pointer-events-auto cursor-pointer"
+                      title="Zephyr-Wind Skimmer (Task Momentum)"
+                    >
+                      <div className="relative flex items-center justify-center">
+                        {/* Sleek Sweep Wing */}
+                        <div className="w-2 h-1 bg-emerald-950 border border-emerald-400/80 rounded-[1px]" />
+                        {/* Aerostat Orb Hull */}
+                        <div className="w-3 h-3 mx-0.5 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-300 border border-emerald-300 shadow-[0_0_12px_#10b981] flex items-center justify-center">
+                          <div className="w-1 h-1 rounded-full bg-white" />
+                        </div>
+                        <div className="w-2 h-1 bg-emerald-950 border border-emerald-400/80 rounded-[1px]" />
+                        {/* Thruster Plume */}
+                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-2 bg-gradient-to-b from-emerald-400 to-transparent rounded-full animate-thruster" />
+                      </div>
                     </div>
                   </div>
 
-                  {/* Orbiting Satellite Nodes Layer 2 */}
-                  <div className="absolute w-full h-full" style={{ animation: 'spin-reverse 22s linear infinite' }}>
-                    {/* Satellite 3: Water */}
-                    <div className="absolute top-1/2 right-[4px] -translate-y-1/2">
-                      <div className="w-3.5 h-3.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#06b6d4]" />
+                  {/* ORBITING SATELLITE SYSTEM 2: Mid Inclination Track (Counter-Clockwise) */}
+                  <div
+                    className="absolute w-full h-full pointer-events-none"
+                    style={{
+                      animation: `spin-reverse ${isRunning ? '16s' : '32s'} linear infinite`,
+                    }}
+                  >
+                    {/* Satellite 3: Hydro-Water (Cryo Station) */}
+                    <div
+                      className="absolute top-1/2 right-[12px] -translate-y-1/2 group pointer-events-auto cursor-pointer"
+                      title="Hydro-Water Station (Calm Processing)"
+                    >
+                      <div className="relative flex flex-col items-center justify-center">
+                        {/* Solar Truss Top */}
+                        <div className="w-1 h-2 bg-cyan-950 border border-cyan-400/70" />
+                        {/* Station Module Core */}
+                        <div className="w-3.5 h-3.5 my-0.5 rounded-full bg-gradient-to-br from-cyan-300 via-sky-500 to-blue-700 border border-cyan-200 shadow-[0_0_14px_#06b6d4] flex items-center justify-center">
+                          <div className="w-1.5 h-1.5 rounded-full bg-cyan-100" />
+                        </div>
+                        {/* Solar Truss Bottom */}
+                        <div className="w-1 h-2 bg-cyan-950 border border-cyan-400/70" />
+                        {/* Ion Thruster Glow */}
+                        <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-gradient-to-r from-cyan-400 to-transparent rounded-full animate-thruster" />
+                      </div>
                     </div>
-                    {/* Satellite 4: Earth */}
-                    <div className="absolute top-1/2 left-[4px] -translate-y-1/2">
-                      <div className="w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_10px_#f59e0b]" />
+
+                    {/* Satellite 4: Geo-Earth (Surveyor Satellite) */}
+                    <div
+                      className="absolute top-1/2 left-[12px] -translate-y-1/2 group pointer-events-auto cursor-pointer"
+                      title="Geo-Earth Surveyor (Cognitive Grounding)"
+                    >
+                      <div className="relative flex flex-col items-center justify-center">
+                        {/* Gold Solar Panel Upper */}
+                        <div className="w-1 h-2.5 bg-amber-950 border border-amber-400/80 rounded-[1px]" />
+                        {/* Surveyor Hull */}
+                        <div className="w-3.5 h-3.5 my-0.5 rounded-sm bg-gradient-to-tr from-amber-700 via-amber-500 to-yellow-400 border border-amber-200 shadow-[0_0_12px_#f59e0b] flex items-center justify-center">
+                          <div className="w-1 h-1 rounded-full bg-white shadow-[0_0_4px_#fff]" />
+                        </div>
+                        {/* Gold Solar Panel Lower */}
+                        <div className="w-1 h-2.5 bg-amber-950 border border-amber-400/80 rounded-[1px]" />
+                        {/* Ion Thruster Glow */}
+                        <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-gradient-to-l from-amber-400 to-transparent rounded-full animate-thruster" />
+                      </div>
                     </div>
                   </div>
 
-                  {/* Central Pulsing Elemental Core */}
-                  <div className="z-10 w-[190px] h-[190px] rounded-full flex flex-col items-center justify-center bg-slate-950/70 backdrop-blur-xl border border-cyan-400 shadow-[0_0_40px_rgba(6,182,212,0.35)]">
-                    <span className="font-heading font-black text-4xl text-white tracking-wider">
-                      {formatTime(timerSeconds)}
-                    </span>
-                    <span className="text-[10px] font-mono text-cyan-400 tracking-widest uppercase mt-1">
-                      {isRunning ? 'DEEP FLOW ACTIVE' : 'READY TO FOCUS'}
-                    </span>
+                  {/* ORBITING SATELLITE SYSTEM 3: Outer High-Inclination Track (Clockwise Slow) */}
+                  <div
+                    className="absolute w-full h-full pointer-events-none"
+                    style={{
+                      animation: `spin ${isRunning ? '20s' : '40s'} linear infinite`,
+                    }}
+                  >
+                    {/* Satellite 5: Cor-05 (Heart Alpha-Wave Transmitter) */}
+                    <div
+                      className="absolute top-[28px] right-[28px] group pointer-events-auto cursor-pointer"
+                      title="Cor-05 Pulsar (10Hz Alpha Synchronization)"
+                    >
+                      <div className="relative flex items-center justify-center">
+                        {/* Alpha Wave Beacon Pulse Ring */}
+                        <div className="absolute w-8 h-8 rounded-full border border-purple-400/60 animate-beacon pointer-events-none" />
+                        {/* Probe Cross Wing Truss */}
+                        <div className="w-2.5 h-1 bg-purple-950 border border-purple-400/70" />
+                        {/* Quantum Transmitter Core */}
+                        <div className="w-3.5 h-3.5 mx-0.5 rounded-full bg-gradient-to-tr from-purple-700 via-fuchsia-500 to-pink-300 border border-purple-200 shadow-[0_0_16px_#c084fc] flex items-center justify-center">
+                          <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_#fff]" />
+                        </div>
+                        <div className="w-2.5 h-1 bg-purple-950 border border-purple-400/70" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CENTRAL CELESTIAL PLANET (The Focus Core Sphere) */}
+                  <div
+                    className={`z-10 w-[184px] h-[184px] sm:w-[196px] sm:h-[196px] rounded-full flex flex-col items-center justify-center relative overflow-hidden transition-all duration-700 ${
+                      isRunning ? 'animate-planet-atmosphere-active' : 'animate-planet-atmosphere'
+                    }`}
+                    style={{
+                      background: 'radial-gradient(circle at 32% 26%, #1e293b 0%, #0f172a 38%, #030712 75%, #000208 100%)',
+                    }}
+                  >
+                    {/* Planetary Atmospheric Contour Curvatures & Surface Bands */}
+                    <svg
+                      viewBox="0 0 200 200"
+                      className="absolute inset-0 w-full h-full pointer-events-none opacity-20"
+                    >
+                      <path d="M 10,70 Q 100,105 190,70" fill="none" stroke="#38bdf8" strokeWidth="2.5" />
+                      <path d="M 0,100 Q 100,135 200,100" fill="none" stroke="#818cf8" strokeWidth="3" />
+                      <path d="M 15,130 Q 100,165 185,130" fill="none" stroke="#06b6d4" strokeWidth="2" />
+                    </svg>
+
+                    {/* Planet Rim Specular Highlight (Upper Left Light Source) */}
+                    <div className="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-cyan-400/15 blur-xl pointer-events-none" />
+
+                    {/* Holographic HUD Cardinal Coordinate Markers */}
+                    <div className="absolute inset-2 rounded-full border border-cyan-400/20 border-dashed pointer-events-none" />
+
+                    {/* Planet Core Timer HUD */}
+                    <div className="relative z-10 flex flex-col items-center justify-center text-center px-2">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                        <span className="text-[9px] font-mono tracking-widest text-cyan-300/80 uppercase">
+                          PLANET PENTA
+                        </span>
+                      </div>
+
+                      <span className="font-heading font-black text-3xl sm:text-4xl text-white tracking-wider drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">
+                        {formatTime(timerSeconds)}
+                      </span>
+
+                      <span className="text-[9px] sm:text-[10px] font-mono tracking-widest uppercase mt-1 px-2.5 py-0.5 rounded-full bg-slate-950/60 border border-white/10 text-cyan-400 font-semibold shadow-sm">
+                        {isRunning ? '🪐 ORBITAL FLOW ACTIVE' : 'READY TO FOCUS'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* FRONT LAYER: Planetary Rings Front Segment (Crossing Planet) */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                    <svg width="340" height="140" viewBox="0 0 340 140" className="opacity-90" style={{ transform: 'rotate(-22deg)' }}>
+                      {/* Mask to render only front half of the ring */}
+                      <defs>
+                        <clipPath id="frontRingClip">
+                          <rect x="0" y="70" width="340" height="70" />
+                        </clipPath>
+                      </defs>
+                      <g clipPath="url(#frontRingClip)">
+                        <ellipse cx="170" cy="70" rx="155" ry="42" fill="none" stroke="url(#ringGradOuter)" strokeWidth="6" opacity="0.45" />
+                        <ellipse cx="170" cy="70" rx="142" ry="38" fill="none" stroke="url(#ringGradInner)" strokeWidth="14" opacity="0.35" />
+                        <ellipse cx="170" cy="70" rx="122" ry="32" fill="none" stroke="#38bdf8" strokeWidth="1.2" opacity="0.8" strokeDasharray="8 4" />
+                      </g>
+                    </svg>
                   </div>
                 </div>
 
