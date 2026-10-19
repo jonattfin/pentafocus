@@ -53,6 +53,17 @@ export default function PentaFocus() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
+  // Keyboard listener for Escape key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isProOpen) {
+        setIsProOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isProOpen]);
+
   // Timer State
   const [timerSeconds, setTimerSeconds] = useState(25 * 60);
   const [timerTotal, setTimerTotal] = useState(25 * 60);
@@ -319,16 +330,24 @@ export default function PentaFocus() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#080c14] text-slate-200">
+    <div className="min-h-screen flex flex-col bg-[#080c14] text-slate-200 relative overflow-x-hidden">
+      {/* Immersive Ambient Glow Mesh */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-cyan-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[30%] right-[-10%] w-[45vw] h-[45vw] max-w-[550px] max-h-[550px] bg-purple-600/10 rounded-full blur-[130px]" />
+        <div className="absolute bottom-[-10%] left-[20%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-indigo-600/10 rounded-full blur-[140px]" />
+      </div>
+
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 z-50 bg-cyan-500 text-slate-950 font-semibold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2">
-          <span>⚡</span> {toastMessage}
+        <div className="fixed top-20 right-6 z-50 bg-slate-900/80 backdrop-blur-2xl border border-cyan-400/40 text-cyan-200 font-medium px-4 py-3 rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.3)] flex items-center gap-2.5 animate-scale-up">
+          <span className="text-cyan-400 text-base">⚡</span>
+          <span className="text-xs sm:text-sm font-semibold">{toastMessage}</span>
         </div>
       )}
 
       {/* Navigation Bar */}
-      <header className="sticky top-0 z-40 bg-[#080c14]/85 backdrop-blur-md border-b border-slate-800">
+      <header className="sticky top-0 z-40 bg-[#080c14]/70 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setView('home')}>
@@ -348,21 +367,21 @@ export default function PentaFocus() {
           </div>
 
           {/* Nav Tabs */}
-          <div className="bg-slate-900 p-1 rounded-full border border-slate-800 flex gap-1">
+          <div className="bg-slate-900/60 backdrop-blur-md p-1 rounded-full border border-white/10 flex gap-1 shadow-lg">
             <button
-              className={`text-xs px-4 py-1.5 rounded-full font-medium transition cursor-pointer ${view === 'home' ? 'bg-cyan-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}`}
+              className={`text-xs px-4 py-1.5 rounded-full font-medium transition cursor-pointer ${view === 'home' ? 'bg-cyan-500 text-slate-950 font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'text-slate-400 hover:text-white'}`}
               onClick={() => setView('home')}
             >
               Home
             </button>
             <button
-              className={`text-xs px-4 py-1.5 rounded-full font-medium transition cursor-pointer ${view === 'app' ? 'bg-cyan-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}`}
+              className={`text-xs px-4 py-1.5 rounded-full font-medium transition cursor-pointer ${view === 'app' ? 'bg-cyan-500 text-slate-950 font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'text-slate-400 hover:text-white'}`}
               onClick={() => setView('app')}
             >
               Engine Workspace
             </button>
             <button
-              className={`text-xs px-4 py-1.5 rounded-full font-medium transition cursor-pointer ${view === 'analytics' ? 'bg-cyan-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}`}
+              className={`text-xs px-4 py-1.5 rounded-full font-medium transition cursor-pointer ${view === 'analytics' ? 'bg-cyan-500 text-slate-950 font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'text-slate-400 hover:text-white'}`}
               onClick={() => setView('analytics')}
             >
               📊 Analytics
@@ -371,7 +390,7 @@ export default function PentaFocus() {
 
           {/* Action Button */}
           <button
-            className="text-xs px-3 py-1.5 rounded-lg border border-amber-500 text-amber-400 hover:bg-amber-500/10 transition font-medium cursor-pointer"
+            className="text-xs px-3.5 py-1.5 rounded-xl border border-amber-500/40 text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(245,158,11,0.2)] transition font-medium cursor-pointer"
             onClick={() => setIsProOpen(true)}
           >
             Planeteer Pass 👑
@@ -380,11 +399,11 @@ export default function PentaFocus() {
       </header>
 
       {/* Main Views Container */}
-      <main className="flex-1 py-6">
+      <main className="flex-1 py-6 relative z-10">
         {view === 'home' ? (
           <div className="max-w-6xl mx-auto px-4 py-10">
             <div className="flex flex-col items-center text-center space-y-8">
-              <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full font-mono text-xs">
+              <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full font-mono text-xs backdrop-blur-md">
                 Acoustic & Biological Focus Architecture
               </span>
 
@@ -403,34 +422,34 @@ export default function PentaFocus() {
                 <button onClick={() => setView('app')} className="bg-cyan-500 text-slate-950 font-bold px-8 py-3 rounded-xl shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:bg-cyan-400 transition cursor-pointer">
                   Launch Focus Engine
                 </button>
-                <button onClick={() => setView('analytics')} className="border border-cyan-500/40 text-cyan-400 px-6 py-3 rounded-xl hover:bg-cyan-500/10 transition cursor-pointer">
+                <button onClick={() => setView('analytics')} className="border border-cyan-500/40 text-cyan-400 px-6 py-3 rounded-xl hover:bg-cyan-500/10 backdrop-blur-md transition cursor-pointer">
                   View Analytics 📊
                 </button>
               </div>
 
               {/* 5 Elemental Pillars */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full pt-12">
-                <div className="bg-slate-900 p-5 rounded-2xl border border-amber-500/40 text-left">
+                <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-2xl border border-amber-500/30 hover:border-amber-500/60 hover:bg-slate-900/60 transition-all duration-300 shadow-xl text-left">
                   <div className="text-2xl mb-2">⛰️</div>
                   <h3 className="font-heading text-xs font-bold text-amber-400 mb-2">1. Earth</h3>
                   <p className="text-xs text-slate-400 leading-relaxed">Deep brown noise frequencies that mask distracting ambient noise and stabilize cognitive grounding.</p>
                 </div>
-                <div className="bg-slate-900 p-5 rounded-2xl border border-red-500/40 text-left">
+                <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-2xl border border-red-500/30 hover:border-red-500/60 hover:bg-slate-900/60 transition-all duration-300 shadow-xl text-left">
                   <div className="text-2xl mb-2">🔥</div>
                   <h3 className="font-heading text-xs font-bold text-red-400 mb-2">2. Fire</h3>
                   <p className="text-xs text-slate-400 leading-relaxed">Organic timber transients that stimulate dopamine production during intense sprint blocks.</p>
                 </div>
-                <div className="bg-slate-900 p-5 rounded-2xl border border-emerald-500/40 text-left">
+                <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-2xl border border-emerald-500/30 hover:border-emerald-500/60 hover:bg-slate-900/60 transition-all duration-300 shadow-xl text-left">
                   <div className="text-2xl mb-2">💨</div>
                   <h3 className="font-heading text-xs font-bold text-emerald-400 mb-2">3. Wind</h3>
                   <p className="text-xs text-slate-400 leading-relaxed">LFO-modulated bandpass gusts that rhythmically encourage steady task momentum.</p>
                 </div>
-                <div className="bg-slate-900 p-5 rounded-2xl border border-cyan-500/40 text-left">
+                <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-2xl border border-cyan-500/30 hover:border-cyan-500/60 hover:bg-slate-900/60 transition-all duration-300 shadow-xl text-left">
                   <div className="text-2xl mb-2">💧</div>
                   <h3 className="font-heading text-xs font-bold text-cyan-400 mb-2">4. Water</h3>
                   <p className="text-xs text-slate-400 leading-relaxed">Filtered rain & stream white-noise textures promoting calm executive processing.</p>
                 </div>
-                <div className="bg-slate-900 p-5 rounded-2xl border border-purple-500/40 text-left">
+                <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-2xl border border-purple-500/30 hover:border-purple-500/60 hover:bg-slate-900/60 transition-all duration-300 shadow-xl text-left">
                   <div className="text-2xl mb-2">❤️</div>
                   <h3 className="font-heading text-xs font-bold text-purple-400 mb-2">5. Heart</h3>
                   <p className="text-xs text-slate-400 leading-relaxed">Precision 10Hz Alpha Binaural Beats designed to synchronize hemispheric brainwaves into relaxed alertness.</p>
@@ -442,7 +461,7 @@ export default function PentaFocus() {
           <div className="max-w-7xl mx-auto px-4 space-y-8">
             {/* Analytics Header / Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-xl">
+              <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-3xl border border-white/10 shadow-xl hover:border-cyan-500/30 hover:bg-slate-900/60 transition-all duration-300">
                 <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-1">Total Focus Time</p>
                 <p className="text-3xl font-heading font-black text-cyan-400">
                   {Math.floor(totalFocusMinutes / 60)}h {totalFocusMinutes % 60}m
@@ -450,7 +469,7 @@ export default function PentaFocus() {
                 <p className="text-xs text-emerald-400 mt-2">↑ +18% vs last week</p>
               </div>
 
-              <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-xl">
+              <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-3xl border border-white/10 shadow-xl hover:border-purple-500/30 hover:bg-slate-900/60 transition-all duration-300">
                 <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-1">Completed Sprints</p>
                 <p className="text-3xl font-heading font-black text-purple-400">
                   {sessionLogs.length} Sessions
@@ -458,7 +477,7 @@ export default function PentaFocus() {
                 <p className="text-xs text-slate-400 mt-2">Average: 37 mins / session</p>
               </div>
 
-              <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-xl">
+              <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-3xl border border-white/10 shadow-xl hover:border-amber-500/30 hover:bg-slate-900/60 transition-all duration-300">
                 <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-1">Current Streak</p>
                 <p className="text-3xl font-heading font-black text-amber-400">
                   5 Days 🔥
@@ -466,7 +485,7 @@ export default function PentaFocus() {
                 <p className="text-xs text-amber-400 mt-2">Personal best: 14 days</p>
               </div>
 
-              <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-xl">
+              <div className="bg-slate-900/40 backdrop-blur-xl p-5 rounded-3xl border border-white/10 shadow-xl hover:border-emerald-500/30 hover:bg-slate-900/60 transition-all duration-300">
                 <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-1">Peak Flow Element</p>
                 <p className="text-3xl font-heading font-black text-emerald-400">
                   Earth (45%)
@@ -478,7 +497,7 @@ export default function PentaFocus() {
             {/* Weekly Focus Bar Chart & Element Distribution */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Weekly Chart */}
-              <div className="lg:col-span-8 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl flex flex-col justify-between">
+              <div className="lg:col-span-8 bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
                 <div>
                   <h2 className="text-lg font-bold text-slate-100">Weekly Deep Work Output</h2>
                   <p className="text-xs text-slate-400">Minutes spent in focused sprint states over the past 7 days.</p>
@@ -507,7 +526,7 @@ export default function PentaFocus() {
               </div>
 
               {/* Element Breakdown */}
-              <div className="lg:col-span-4 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl flex flex-col justify-between">
+              <div className="lg:col-span-4 bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
                 <div>
                   <h2 className="text-lg font-bold text-slate-100">Elemental Resonance</h2>
                   <p className="text-xs text-slate-400">Soundtrack preference split.</p>
@@ -519,7 +538,7 @@ export default function PentaFocus() {
                       <span className="text-amber-400">⛰️ Earth (Brown Noise)</span>
                       <span className="font-mono">45%</span>
                     </div>
-                    <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-slate-950/60 rounded-full overflow-hidden">
                       <div className="h-full bg-amber-500 rounded-full" style={{ width: '45%' }} />
                     </div>
                   </div>
@@ -529,7 +548,7 @@ export default function PentaFocus() {
                       <span className="text-purple-400">❤️ Heart (Binaural)</span>
                       <span className="font-mono">25%</span>
                     </div>
-                    <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-slate-950/60 rounded-full overflow-hidden">
                       <div className="h-full bg-purple-500 rounded-full" style={{ width: '25%' }} />
                     </div>
                   </div>
@@ -539,7 +558,7 @@ export default function PentaFocus() {
                       <span className="text-cyan-400">💧 Water (Rain)</span>
                       <span className="font-mono">15%</span>
                     </div>
-                    <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-slate-950/60 rounded-full overflow-hidden">
                       <div className="h-full bg-cyan-500 rounded-full" style={{ width: '15%' }} />
                     </div>
                   </div>
@@ -549,25 +568,25 @@ export default function PentaFocus() {
                       <span className="text-red-400">🔥 Fire / 💨 Wind</span>
                       <span className="font-mono">15%</span>
                     </div>
-                    <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-slate-950/60 rounded-full overflow-hidden">
                       <div className="h-full bg-red-500 rounded-full" style={{ width: '15%' }} />
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs text-slate-400">
+                <div className="bg-slate-950/40 backdrop-blur-md p-3 rounded-2xl border border-white/5 text-xs text-slate-400">
                   💡 Tip: Pairing Earth noise with Q2 tasks yields your highest completion rate.
                 </div>
               </div>
             </div>
 
             {/* Recent Session Logs */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl">
+            <div className="bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl">
               <h2 className="text-lg font-bold text-slate-100 mb-4">Recent Completed Sprint Logs</h2>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-slate-800 text-slate-400 font-mono">
+                    <tr className="border-b border-white/10 text-slate-400 font-mono">
                       <th className="pb-3">TIME & DATE</th>
                       <th className="pb-3">OBJECTIVE / TASK</th>
                       <th className="pb-3">PRIMARY ELEMENT</th>
@@ -575,9 +594,9 @@ export default function PentaFocus() {
                       <th className="pb-3">FLOW STATE QUALITY</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60">
+                  <tbody className="divide-y divide-white/5">
                     {sessionLogs.map((log) => (
-                      <tr key={log.id} className="hover:bg-slate-950/40">
+                      <tr key={log.id} className="hover:bg-slate-900/40 transition">
                         <td className="py-3 font-mono text-slate-400">{log.date}</td>
                         <td className="py-3 font-semibold text-slate-200">{log.task}</td>
                         <td className="py-3 font-mono text-cyan-400">{log.element}</td>
@@ -595,10 +614,10 @@ export default function PentaFocus() {
             {/* SECTION 1: MAIN FOCUS CIRCLE & QUOTE CARD */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Left: Quotes Card */}
-              <div className="lg:col-span-4 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-2xl flex flex-col justify-between">
+              <div className="lg:col-span-4 bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between hover:border-cyan-500/20 transition-all duration-300">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 border border-cyan-500/30 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 rounded-full">
                       Focus Resonance
                     </span>
                     <button
@@ -617,7 +636,7 @@ export default function PentaFocus() {
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-slate-800 mt-6">
+                <div className="pt-6 border-t border-white/10 mt-6">
                   <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider mb-1">
                     Locked Focus Objective
                   </p>
@@ -631,7 +650,7 @@ export default function PentaFocus() {
               </div>
 
               {/* Center: MAIN FOCUS CIRCLE ENGINE WITH ORBITING SATELLITES */}
-              <div className="lg:col-span-8 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-2xl flex flex-col items-center justify-center min-h-[380px] relative">
+              <div className="lg:col-span-8 bg-slate-900/40 backdrop-blur-2xl p-6 rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5),0_0_30px_rgba(6,182,212,0.12)] flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden">
                 {/* Center Elements Container with Orbit Animation */}
                 <div className="relative flex items-center justify-center w-[280px] h-[280px] my-2">
                   {/* SVG Orbit Ring 1 (Clockwise) */}
@@ -673,7 +692,7 @@ export default function PentaFocus() {
                   </div>
 
                   {/* Central Pulsing Elemental Core */}
-                  <div className="z-10 w-[190px] h-[190px] rounded-full flex flex-col items-center justify-center bg-slate-950 border border-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
+                  <div className="z-10 w-[190px] h-[190px] rounded-full flex flex-col items-center justify-center bg-slate-950/70 backdrop-blur-xl border border-cyan-400 shadow-[0_0_40px_rgba(6,182,212,0.35)]">
                     <span className="font-heading font-black text-4xl text-white tracking-wider">
                       {formatTime(timerSeconds)}
                     </span>
@@ -695,22 +714,22 @@ export default function PentaFocus() {
                   </button>
                   <button
                     onClick={resetTimer}
-                    className="p-2 border border-slate-700 hover:border-slate-500 text-slate-300 rounded-xl transition cursor-pointer"
+                    className="p-2 border border-white/10 hover:border-white/30 bg-slate-950/40 backdrop-blur-sm text-slate-300 rounded-xl transition cursor-pointer"
                     title="Reset Timer"
                   >
                     🔄
                   </button>
-                  <div className="h-6 w-px bg-slate-800 mx-1" />
-                  <button onClick={() => setPreset(50)} className="text-xs px-3 py-1.5 border border-slate-800 rounded-lg hover:border-slate-600 transition cursor-pointer">50m</button>
-                  <button onClick={() => setPreset(25)} className="text-xs px-3 py-1.5 border border-cyan-500/50 text-cyan-400 rounded-lg hover:bg-cyan-500/10 transition font-medium cursor-pointer">25m</button>
-                  <button onClick={() => setPreset(15)} className="text-xs px-3 py-1.5 border border-slate-800 rounded-lg hover:border-slate-600 transition cursor-pointer">15m</button>
+                  <div className="h-6 w-px bg-white/10 mx-1" />
+                  <button onClick={() => setPreset(50)} className="text-xs px-3 py-1.5 border border-white/10 bg-slate-950/30 backdrop-blur-sm rounded-lg hover:border-cyan-500/50 hover:bg-cyan-500/10 transition cursor-pointer">50m</button>
+                  <button onClick={() => setPreset(25)} className="text-xs px-3 py-1.5 border border-cyan-500/50 bg-cyan-500/10 text-cyan-400 rounded-lg hover:bg-cyan-500/20 backdrop-blur-sm transition font-medium cursor-pointer">25m</button>
+                  <button onClick={() => setPreset(15)} className="text-xs px-3 py-1.5 border border-white/10 bg-slate-950/30 backdrop-blur-sm rounded-lg hover:border-cyan-500/50 hover:bg-cyan-500/10 transition cursor-pointer">15m</button>
                 </div>
               </div>
             </div>
 
             {/* SECTION 2: EISENHOWER MATRIX WORKSPACE */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-800">
+            <div className="bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-white/10">
                 <div>
                   <h2 className="text-lg font-bold text-slate-100">
                     Eisenhower Action Matrix
@@ -723,13 +742,13 @@ export default function PentaFocus() {
                   <input
                     type="text"
                     placeholder="Add new task..."
-                    className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-cyan-500 flex-1 sm:w-48 text-slate-200"
+                    className="bg-slate-950/50 backdrop-blur-md border border-white/10 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-cyan-400 flex-1 sm:w-48 text-slate-200"
                     value={newTaskTitle}
                     onChange={(e) => setNewTaskTitle(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
                   />
                   <select
-                    className="bg-slate-950 border border-slate-800 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-cyan-500 text-slate-200 cursor-pointer"
+                    className="bg-slate-950/50 backdrop-blur-md border border-white/10 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-cyan-400 text-slate-200 cursor-pointer"
                     value={newTaskQuad}
                     onChange={(e) => setNewTaskQuad(e.target.value)}
                   >
@@ -747,7 +766,7 @@ export default function PentaFocus() {
               {/* 4 Quadrants Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Q1 */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-red-500/30 min-h-[120px]">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-red-500/30 min-h-[120px]">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-bold text-red-400 font-mono">Q1: URGENT & IMPORTANT (DO FIRST)</span>
                     <span className="bg-red-500/20 text-red-400 text-[10px] px-2 py-0.5 rounded-full font-mono">
@@ -756,7 +775,7 @@ export default function PentaFocus() {
                   </div>
                   <div className="space-y-2">
                     {tasks.filter(t => t.quadrant === 'q1').map(t => (
-                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900 border-cyan-500' : 'bg-slate-900/60 border-slate-800'}`}>
+                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900/80 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'bg-slate-900/30 backdrop-blur-sm border-white/5 hover:border-white/15'}`}>
                         <div className="flex items-center gap-2 flex-1 mr-2 cursor-pointer" onClick={() => toggleTaskDone(t.id)}>
                           <input type="checkbox" checked={t.done} onChange={() => toggleTaskDone(t.id)} className="accent-cyan-500 cursor-pointer" />
                           <span className={`text-xs ${t.done ? 'line-through text-slate-500' : 'text-slate-200'}`}>{t.title}</span>
@@ -771,7 +790,7 @@ export default function PentaFocus() {
                 </div>
 
                 {/* Q2 */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-cyan-500/30 min-h-[120px]">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-cyan-500/30 min-h-[120px]">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-bold text-cyan-400 font-mono">Q2: DEEP WORK (SCHEDULE)</span>
                     <span className="bg-cyan-500/20 text-cyan-400 text-[10px] px-2 py-0.5 rounded-full font-mono">
@@ -780,7 +799,7 @@ export default function PentaFocus() {
                   </div>
                   <div className="space-y-2">
                     {tasks.filter(t => t.quadrant === 'q2').map(t => (
-                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900 border-cyan-500' : 'bg-slate-900/60 border-slate-800'}`}>
+                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900/80 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'bg-slate-900/30 backdrop-blur-sm border-white/5 hover:border-white/15'}`}>
                         <div className="flex items-center gap-2 flex-1 mr-2 cursor-pointer" onClick={() => toggleTaskDone(t.id)}>
                           <input type="checkbox" checked={t.done} onChange={() => toggleTaskDone(t.id)} className="accent-cyan-500 cursor-pointer" />
                           <span className={`text-xs ${t.done ? 'line-through text-slate-500' : 'text-slate-200'}`}>{t.title}</span>
@@ -795,7 +814,7 @@ export default function PentaFocus() {
                 </div>
 
                 {/* Q3 */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-amber-500/30 min-h-[120px]">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-amber-500/30 min-h-[120px]">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-bold text-amber-400 font-mono">Q3: URGENT & NOT IMPORTANT (DELEGATE)</span>
                     <span className="bg-amber-500/20 text-amber-400 text-[10px] px-2 py-0.5 rounded-full font-mono">
@@ -804,7 +823,7 @@ export default function PentaFocus() {
                   </div>
                   <div className="space-y-2">
                     {tasks.filter(t => t.quadrant === 'q3').map(t => (
-                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900 border-cyan-500' : 'bg-slate-900/60 border-slate-800'}`}>
+                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900/80 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'bg-slate-900/30 backdrop-blur-sm border-white/5 hover:border-white/15'}`}>
                         <div className="flex items-center gap-2 flex-1 mr-2 cursor-pointer" onClick={() => toggleTaskDone(t.id)}>
                           <input type="checkbox" checked={t.done} onChange={() => toggleTaskDone(t.id)} className="accent-cyan-500 cursor-pointer" />
                           <span className={`text-xs ${t.done ? 'line-through text-slate-500' : 'text-slate-200'}`}>{t.title}</span>
@@ -819,16 +838,16 @@ export default function PentaFocus() {
                 </div>
 
                 {/* Q4 */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 min-h-[120px]">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-slate-700/50 min-h-[120px]">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-bold text-slate-400 font-mono">Q4: LOW VALUE (ELIMINATE)</span>
-                    <span className="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded-full font-mono">
+                    <span className="bg-slate-800/60 text-slate-400 text-[10px] px-2 py-0.5 rounded-full font-mono">
                       {tasks.filter(t => t.quadrant === 'q4').length}
                     </span>
                   </div>
                   <div className="space-y-2">
                     {tasks.filter(t => t.quadrant === 'q4').map(t => (
-                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900 border-cyan-500' : 'bg-slate-900/60 border-slate-800'}`}>
+                      <div key={t.id} className={`flex justify-between items-center p-2 rounded-xl border transition ${lockedTaskId === t.id ? 'bg-slate-900/80 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'bg-slate-900/30 backdrop-blur-sm border-white/5 hover:border-white/15'}`}>
                         <div className="flex items-center gap-2 flex-1 mr-2 cursor-pointer" onClick={() => toggleTaskDone(t.id)}>
                           <input type="checkbox" checked={t.done} onChange={() => toggleTaskDone(t.id)} className="accent-cyan-500 cursor-pointer" />
                           <span className={`text-xs ${t.done ? 'line-through text-slate-500' : 'text-slate-200'}`}>{t.title}</span>
@@ -845,19 +864,19 @@ export default function PentaFocus() {
             </div>
 
             {/* SECTION 3: CIRCADIAN TELEMETRY */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl">
+            <div className="bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                 <div>
                   <h2 className="text-lg font-bold text-slate-100">Circadian Biorhythm Telemetry</h2>
                   <p className="text-xs text-slate-400">Scrub the timeline to evaluate your natural cognitive energy state across 24 hours.</p>
                 </div>
-                <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-xl font-mono text-xs">
+                <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-xl font-mono text-xs backdrop-blur-md">
                   {getCircadianLabel(scrubberHour)}
                 </span>
               </div>
 
               {/* SVG Graph Container */}
-              <div className="w-full h-28 bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden relative p-2">
+              <div className="w-full h-28 bg-slate-950/40 backdrop-blur-md rounded-2xl border border-white/5 overflow-hidden relative p-2">
                 <svg width="100%" height="100%" viewBox="0 0 1000 150" preserveAspectRatio="none">
                   <line x1="0" y1="30" x2="1000" y2="30" stroke="#1e293b" strokeDasharray="4 4" />
                   <line x1="0" y1="75" x2="1000" y2="75" stroke="#1e293b" strokeDasharray="4 4" />
@@ -889,15 +908,15 @@ export default function PentaFocus() {
             </div>
 
             {/* SECTION 4: 5-RING ELEMENTAL AUDIO MIXER (BOTTOM) */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl">
-              <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-800">
+            <div className="bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl">
+              <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
                 <div>
                   <h2 className="text-lg font-bold text-slate-100">5-Ring Elemental Audio Mixer</h2>
                   <p className="text-xs text-slate-400">Synthesize customized background soundscapes in real-time using Web Audio DSP.</p>
                 </div>
                 <button
                   onClick={toggleMute}
-                  className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition cursor-pointer ${isMuted ? 'border-red-500 text-red-400' : 'border-cyan-500 text-cyan-400'}`}
+                  className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition cursor-pointer backdrop-blur-md ${isMuted ? 'border-red-500/50 bg-red-500/10 text-red-400' : 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400'}`}
                 >
                   {isMuted ? 'MUTED 🔇' : 'AUDIO ACTIVE 🔊'}
                 </button>
@@ -905,7 +924,7 @@ export default function PentaFocus() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 {/* Earth */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-amber-500/30">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-amber-500/30 hover:border-amber-500/60 transition-all duration-300 shadow-lg">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-amber-400">⛰️ Earth</span>
                     <span className="text-xs font-mono text-slate-400">{volumes.earth}%</span>
@@ -922,7 +941,7 @@ export default function PentaFocus() {
                 </div>
 
                 {/* Fire */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-red-500/30">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-red-500/30 hover:border-red-500/60 transition-all duration-300 shadow-lg">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-red-400">🔥 Fire</span>
                     <span className="text-xs font-mono text-slate-400">{volumes.fire}%</span>
@@ -939,7 +958,7 @@ export default function PentaFocus() {
                 </div>
 
                 {/* Wind */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-emerald-500/30">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-emerald-500/30 hover:border-emerald-500/60 transition-all duration-300 shadow-lg">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-emerald-400">💨 Wind</span>
                     <span className="text-xs font-mono text-slate-400">{volumes.wind}%</span>
@@ -956,7 +975,7 @@ export default function PentaFocus() {
                 </div>
 
                 {/* Water */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-cyan-500/30">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-cyan-500/30 hover:border-cyan-500/60 transition-all duration-300 shadow-lg">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-cyan-400">💧 Water</span>
                     <span className="text-xs font-mono text-slate-400">{volumes.water}%</span>
@@ -973,7 +992,7 @@ export default function PentaFocus() {
                 </div>
 
                 {/* Heart */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-purple-500/30">
+                <div className="bg-slate-950/40 backdrop-blur-md p-4 rounded-2xl border border-purple-500/30 hover:border-purple-500/60 transition-all duration-300 shadow-lg">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-purple-400">❤️ Heart</span>
                     <span className="text-xs font-mono text-slate-400">{volumes.heart}%</span>
@@ -996,46 +1015,89 @@ export default function PentaFocus() {
 
       {/* Planeteer Pass Pro Modal */}
       {isProOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full relative shadow-2xl space-y-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-xl animate-fade-in transition-all duration-300"
+          onClick={() => setIsProOpen(false)}
+        >
+          <div
+            className="relative bg-slate-900/50 backdrop-blur-2xl border border-white/15 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-[0_0_60px_rgba(0,0,0,0.8),0_0_40px_rgba(245,158,11,0.2)] space-y-6 overflow-hidden animate-scale-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Ambient Background Glow Spheres inside modal */}
+            <div className="absolute -top-24 -left-24 w-48 h-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Close Button */}
             <button
               onClick={() => setIsProOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer"
+              className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white border border-white/10 transition cursor-pointer z-10"
+              aria-label="Close modal"
             >
               ✕
             </button>
-            <div className="text-center">
-              <h3 className="text-2xl font-bold">👑 Planeteer Pass</h3>
-              <p className="text-xs text-slate-400 mt-1">
-                Unlock lifetime audio synthesis, custom biorhythm curves & sleep data syncing.
+
+            {/* Modal Header */}
+            <div className="text-center relative z-10 space-y-2">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-purple-500/20 border border-amber-500/30 text-2xl shadow-[0_0_20px_rgba(245,158,11,0.25)] mb-1">
+                👑
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-heading font-black bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 bg-clip-text text-transparent">
+                Planeteer Pass
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
+                Unlock lifetime elemental audio synthesis, custom biorhythm curves & sleep telemetry integration.
               </p>
             </div>
-            <div className="space-y-2 pt-2">
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs">
-                ✅ Unlimited 5-Element Soundscape Layering
+
+            {/* Feature Cards with Glassmorphism */}
+            <div className="space-y-2.5 relative z-10">
+              <div className="p-3.5 bg-slate-950/40 backdrop-blur-md rounded-2xl border border-white/5 hover:border-amber-500/30 hover:bg-slate-900/40 transition flex items-start gap-3">
+                <span className="text-amber-400 text-sm mt-0.5">✨</span>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-200">Unlimited 5-Element Soundscapes</h4>
+                  <p className="text-[11px] text-slate-400">Layer Earth, Fire, Wind, Water & Heart Alpha synths simultaneously with zero duration limits.</p>
+                </div>
               </div>
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs">
-                ✅ Custom Circadian Energy Curves & Health App Sync
+
+              <div className="p-3.5 bg-slate-950/40 backdrop-blur-md rounded-2xl border border-white/5 hover:border-cyan-500/30 hover:bg-slate-900/40 transition flex items-start gap-3">
+                <span className="text-cyan-400 text-sm mt-0.5">⚡</span>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-200">Custom Circadian Curves & Bio-Sync</h4>
+                  <p className="text-[11px] text-slate-400">Calibrate your peak ultradian rhythm according to your exact sleep cycles and chronotype.</p>
+                </div>
               </div>
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs">
-                ✅ Zen Immersion Shaders & Particle Effects
+
+              <div className="p-3.5 bg-slate-950/40 backdrop-blur-md rounded-2xl border border-white/5 hover:border-purple-500/30 hover:bg-slate-900/40 transition flex items-start gap-3">
+                <span className="text-purple-400 text-sm mt-0.5">🔮</span>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-200">Zen Immersion Shaders & Particle Effects</h4>
+                  <p className="text-[11px] text-slate-400">Dynamic orbital celestial shaders that react harmonically to audio synth frequencies.</p>
+                </div>
               </div>
             </div>
-            <button
-              className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 rounded-xl transition mt-4 cursor-pointer"
-              onClick={() => {
-                showToast('Lifetime Access Granted!');
-                setIsProOpen(false);
-              }}
-            >
-              Get Lifetime Access - $29 USD
-            </button>
+
+            {/* CTA Button */}
+            <div className="relative z-10 pt-2">
+              <button
+                className="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-heading font-black py-3.5 rounded-2xl shadow-[0_0_25px_rgba(245,158,11,0.4)] transition transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm tracking-wide"
+                onClick={() => {
+                  showToast('👑 Lifetime Access Granted! Welcome Planeteer.');
+                  setIsProOpen(false);
+                }}
+              >
+                Claim Lifetime Access • $29 USD
+              </button>
+              <p className="text-[10px] text-center text-slate-500 mt-2 font-mono">
+                One-time payment • Instant activation • 30-day money-back guarantee
+              </p>
+            </div>
           </div>
         </div>
       )}
 
       {/* Footer */}
-      <footer className="py-6 border-t border-slate-900 text-center text-xs text-slate-500 font-mono">
+      <footer className="py-6 border-t border-white/10 text-center text-xs text-slate-500 font-mono relative z-10">
         PENTAFOCUS Engine • Powered by React
       </footer>
     </div>
