@@ -894,7 +894,7 @@ export default function PentaFocus() {
                       isRunning ? 'bg-red-500 hover:bg-red-600 text-white shadow-red-500/30' : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-cyan-500/30'
                     }`}
                   >
-                    {isRunning ? 'PAUSE SPRINT' : 'START SPRINT'}
+                    {isRunning ? 'PAUSE VOYAGE' : 'START VOYAGE'}
                   </button>
                   <button
                     onClick={resetTimer}
@@ -1282,7 +1282,7 @@ export default function PentaFocus() {
 
       {/* Footer */}
       <footer className="py-6 border-t border-white/10 text-center text-xs text-slate-500 font-mono relative z-10">
-        PENTAFOCUS Engine • Powered by React
+        PENTAFOCUS Engine • Powered by You
       </footer>
     </div>
   );
